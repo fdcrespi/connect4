@@ -97,7 +97,6 @@ console.log(board);
  
 function addTablero() {
   casilleros = [];
- 
 
   for (let x = 0; x < columnas; x++) {
     ctx.beginPath();
