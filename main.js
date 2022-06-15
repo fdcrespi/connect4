@@ -53,7 +53,7 @@ function addCircle(color, jug) {
   let y = Math.floor(100 + Math.random() * 225);
   /* let radius = Math.floor(Math.random() * 50); */
   let fill = color;
-  let circle = new Circle(x, y, 20, fill, ctx);
+  let circle = new Circle(x, y, 20, fill, ctx, jug);
   figures.push(circle);
 }
 
@@ -95,6 +95,7 @@ function onMouseUp(e) {
           ultimaFiguraClickeada.setPosition(board[index][columna].x, board[index][columna].y);
           ultimaFiguraClickeada.setIsClickable(false);
           ultimaFiguraClickeada.setResaltado(false);
+          deshabilitarFichas(ultimaFiguraClickeada.jugador);
           drawFigure();
           break;
         }
@@ -125,11 +126,22 @@ function play (){
     addFigure('green', 1);
     addFigure('blue', 2);  
   }
+  deshabilitarFichas(2);
   addTablero();
 }
 
+function deshabilitarFichas(jug) {
+  figures.forEach(ficha => {
+    if (ficha.jugador == jug && !ficha.isPut) {
+      ficha.setIsClickable(false);
+    } else if (!ficha.isPut) {
+      ficha.setIsClickable(true);
+    }
+  });
+}
+
 play();
-console.log(board);
+/* console.log(board); */
 
 function addTablero() {
   casilleros = [];   

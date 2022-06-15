@@ -1,11 +1,13 @@
 class Circle extends Figure {
 
-  constructor(x, y, radius, fill, context) {
+  constructor(x, y, radius, fill, context, jug) {
     super(x, y, fill, context);
     this.radius = radius;
     this.isClickeable = true;
     this.posXoriginal = x;
     this.posYoriginal = y;
+    this.jugador = jug;
+    this.isPut = false;
   }
 
   draw() {
@@ -41,6 +43,14 @@ class Circle extends Figure {
 
   setIsClickable(isClickeable) {
     this.isClickeable = isClickeable;
+  }
+
+  isPut(){
+    return this.isPut;
+  }
+
+  setIsPut(isPut){
+    this.isPut = isPut;
   }
 
   isPointInside(x, y) {
