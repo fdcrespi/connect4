@@ -26,7 +26,7 @@ function addFigure(color, jug) {
 /* Borra el canvas y redibuja todo */
 function drawFigure() {
   clearCanvas();
-  for (let i = 0; i < figures.length; i++) {
+  for (let i = figures.length - 1; i > 0; i--) {
     figures[i].draw();
   }
 }
