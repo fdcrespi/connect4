@@ -34,6 +34,7 @@ function drawFigure() {
 function drawTab(){
    /* dibujo base tablero */
    ctx.beginPath();
+   ctx.fillStyle = "#1E69B1";
    ctx.fillRect(220, 75, 350, 290);
    /* FIN dibujo base tablero */
 }
@@ -84,10 +85,21 @@ function onMouseUp(e) {
   isMouseDown = false;
   casilleros.forEach(elem => {
     if (elem.x > e.offsetX - 10 && elem.x < e.offsetX + 10 && elem.y > e.offsetY - 10 && elem.y < e.offsetY + 10) {
-      console.log(casilleros.indexOf(elem));
+      let columna = casilleros.indexOf(elem);
+      for (let index = filas - 1; index >= 0; index--) {
+        let casilla = board[index][columna]; 
+        /* console.log(casilla); */
+        if (casilla.value == 0) {
+          board[index][columna].value = 1;
+          ultimaFiguraClickeada.setPosition(board[index][columna].x, board[index][columna].y);
+          ultimaFiguraClickeada.setIsClickable(false);
+          ultimaFiguraClickeada.setResaltado(false);
+          drawFigure();
+          break;
+        }
+      }
     }
   });
-
 }
 
 function onMouseMove(event) {
@@ -97,12 +109,21 @@ function onMouseMove(event) {
   }
 }
 
-for (let i = 0; i < CANT_FIGURAS; i++) {
-  addFigure('green', 1);
-  addFigure('blue', 2);  
+function play (){
+  for (let i = 0; i < filas; i++) {
+    board[i] = [];
+    for (let j = 0; j < columnas; j++) {
+      board[i][j] = ({ x: 0, y: 0, value: 0 });
+    }
+  }
+  for (let i = 0; i < CANT_FIGURAS; i++) {
+    addFigure('green', 1);
+    addFigure('blue', 2);  
+  }
+  addTablero();
 }
 
-addTablero();
+play();
 console.log(board);
 
 function addTablero() {
@@ -122,13 +143,14 @@ function addTablero() {
   }
   
   for (let i = 0; i < filas; i++) {
-    board[i] = [];
+    /* board[i] = []; */
     for (let j = 0; j < columnas; j++) {
       ctx.strokeStyle = `rgb(
         0,
         ${Math.floor(255 - 42.5 * i)},
         ${Math.floor(255 - 42.5 * j)})`;
-        ctx.fillStyle = "white"; //agrego fondo blanco
+        ctx.fillStyle = "white";
+        //ctx.fillStyle = "white"; //agrego fondo blanco
         ctx.beginPath();
         let positionx = 250 + j * 48;
         let positiony = 100 + i * 48;
@@ -136,7 +158,9 @@ function addTablero() {
         ctx.fill(); //agrego fondo blanco
         ctx.stroke();
         /* Inicializamos la matriz de front */
-        board[i][j] = ({ x: positionx, y: positiony });
+        /* board[i][j] = ({ x: positionx, y: positiony }); */
+        board[i][j].x = positionx;
+        board[i][j].y = positiony;
       }
     }    
 }
