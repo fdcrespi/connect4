@@ -95,6 +95,7 @@ function onMouseUp(e) {
           ultimaFiguraClickeada.setPosition(board[index][columna].x, board[index][columna].y);
           ultimaFiguraClickeada.setIsClickable(false);
           ultimaFiguraClickeada.setResaltado(false);
+          ultimaFiguraClickeada.setIsPut(true);
           deshabilitarFichas(ultimaFiguraClickeada.jugador);
           drawFigure();
           break;
