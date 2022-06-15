@@ -6,15 +6,15 @@ let ctx = canvas.getContext("2d");
 let canvasWidth = canvas.width;
 let canvasHeight = canvas.height;
 
-const CANT_FIGURAS = 20;
+const filas = 6;
+const columnas = 7;
+const CANT_FIGURAS = filas * columnas / 2 + 1;
 
 let figures = [];
 let casilleros = []; //Guarda la posicion de los casilleros donde se coloca la ficha
 let ultimaFiguraClickeada = null;
 let isMouseDown = false;
 
-const filas = 6;
-const columnas = 7;
 let board = [];
 
 
@@ -83,13 +83,14 @@ function buscarFiguraClickeada(x, y) {
 
 function onMouseUp(e) {
   isMouseDown = false;
+  let isColocado = false;
   casilleros.forEach(elem => {
     if (elem.x > e.offsetX - 10 && elem.x < e.offsetX + 10 && elem.y > e.offsetY - 10 && elem.y < e.offsetY + 10) {
       let columna = casilleros.indexOf(elem);
       for (let index = filas - 1; index >= 0; index--) {
         let casilla = board[index][columna]; 
-        /* console.log(casilla); */
         if (casilla.value == 0) {
+          isColocado = true;
           board[index][columna].value = 1;
           ultimaFiguraClickeada.setPosition(board[index][columna].x, board[index][columna].y);
           ultimaFiguraClickeada.setIsClickable(false);
@@ -100,6 +101,10 @@ function onMouseUp(e) {
       }
     }
   });
+  if (ultimaFiguraClickeada != null && !isColocado){
+    ultimaFiguraClickeada.setPosition(ultimaFiguraClickeada.getPositionOriginal().x, ultimaFiguraClickeada.getPositionOriginal().y);
+    drawFigure();
+  }
 }
 
 function onMouseMove(event) {

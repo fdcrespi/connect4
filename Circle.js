@@ -24,11 +24,11 @@ class Circle extends Figure {
     }
   }
 
-  getPosition() {
+  getPositionOriginal() {
     return {
-      x: this.x,
-      y: this.y
-    };
+      x: this.posXoriginal,
+      y: this.posYoriginal
+    }
   }
 
   setRadius(radius) {
