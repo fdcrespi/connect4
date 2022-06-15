@@ -91,7 +91,7 @@ function onMouseUp(e) {
         let casilla = board[index][columna]; 
         if (casilla.value == 0) {
           isColocado = true;
-          board[index][columna].value = 1;
+          board[index][columna].value = ultimaFiguraClickeada.jugador;
           ultimaFiguraClickeada.setPosition(board[index][columna].x, board[index][columna].y);
           ultimaFiguraClickeada.setIsClickable(false);
           ultimaFiguraClickeada.setResaltado(false);
@@ -142,6 +142,13 @@ function deshabilitarFichas(jug) {
 }
 
 play();
+/* document.querySelector("#time").style.display = "none";
+document.querySelector("#reset").addEventListener("click", () => {
+  location.reload();
+})
+setTimeout(() => {
+  document.querySelector("#time").style.display = "block";
+}, 6000); */
 /* console.log(board); */
 
 function addTablero() {
