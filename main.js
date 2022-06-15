@@ -98,10 +98,11 @@ function onMouseUp(e) {
           ultimaFiguraClickeada.setResaltado(false);
           ultimaFiguraClickeada.setIsPut(true);
           deshabilitarFichas(ultimaFiguraClickeada.jugador);
-          drawFigure();
           if (comprobarGanador(board, index, columna, filas, columnas)) {
             console.log('Ganador: ' + ultimaFiguraClickeada.jugador);
+            deshabilitarTodasLasFichas();
           }
+          drawFigure();
           break;
         }
       }
@@ -142,6 +143,12 @@ function deshabilitarFichas(jug) {
     } else if (!ficha.isPut) {
       ficha.setIsClickable(true);
     }
+  });
+}
+
+function deshabilitarTodasLasFichas(){
+  figures.forEach(ficha => {
+      ficha.setIsClickable(false);
   });
 }
 
