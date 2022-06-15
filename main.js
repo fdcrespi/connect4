@@ -1,6 +1,7 @@
 "use strict"
 
 let canvas = document.getElementById("canvas");
+/** @type {CanvasRenderingContext2D} */   //agrego linea para que interprete y ayude cuando uses .ctx
 let ctx = canvas.getContext("2d");
 let canvasWidth = canvas.width;
 let canvasHeight = canvas.height;
@@ -30,6 +31,14 @@ function drawFigure() {
   }
 }
 
+function drawTab(){
+   /* dibujo base tablero */
+   ctx.beginPath();
+   ctx.fillRect(220, 75, 350, 290);
+   /* FIN dibujo base tablero */
+}
+
+
 function clearCanvas() {
   //ctx.clearRect(0, 0, canvasWidth, canvasHeight);
   ctx.fillStyle = "#FFF7CE";
@@ -58,7 +67,7 @@ function onMouseDown(event) {
   if (FigClickeada != null) {
     FigClickeada.setResaltado(true);
     ultimaFiguraClickeada = FigClickeada;
-  }
+  }  
   drawFigure();
 }
 
@@ -90,13 +99,16 @@ function onMouseMove(event) {
 
 for (let i = 0; i < CANT_FIGURAS; i++) {
   addFigure('green', 1);
-  addFigure('blue', 2);
+  addFigure('blue', 2);  
 }
+
 addTablero();
 console.log(board);
- 
+
 function addTablero() {
-  casilleros = [];
+  casilleros = [];   
+ 
+  drawTab(); // dibujo base tablero PERO no se redibuja luego.
 
   for (let x = 0; x < columnas; x++) {
     ctx.beginPath();
@@ -108,25 +120,26 @@ function addTablero() {
     ctx.stroke();
     casilleros.push({ x: posx, y: 50 });
   }
-
+  
   for (let i = 0; i < filas; i++) {
     board[i] = [];
     for (let j = 0; j < columnas; j++) {
       ctx.strokeStyle = `rgb(
-          0,
-          ${Math.floor(255 - 42.5 * i)},
-          ${Math.floor(255 - 42.5 * j)})`;
-      ctx.beginPath();
-      let positionx = 250 + j * 48;
-      let positiony = 100 + i * 48;
-      ctx.arc(positionx, positiony, 21, 0, Math.PI * 2, true);
-      ctx.stroke();
-      /* Inicializamos la matriz de front */
-      board[i][j] = ({ x: positionx, y: positiony });
-    }
-  }
+        0,
+        ${Math.floor(255 - 42.5 * i)},
+        ${Math.floor(255 - 42.5 * j)})`;
+        ctx.fillStyle = "white"; //agrego fondo blanco
+        ctx.beginPath();
+        let positionx = 250 + j * 48;
+        let positiony = 100 + i * 48;
+        ctx.arc(positionx, positiony, 21, 0, Math.PI * 2, true);
+        ctx.fill(); //agrego fondo blanco
+        ctx.stroke();
+        /* Inicializamos la matriz de front */
+        board[i][j] = ({ x: positionx, y: positiony });
+      }
+    }    
 }
-
 
 canvas.addEventListener("mousedown", onMouseDown, false);
 canvas.addEventListener("mouseup", onMouseUp, false);
