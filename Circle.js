@@ -13,11 +13,12 @@ class Circle extends Figure {
   draw() {
     super.draw();
     this.context.beginPath();
-    this.context.strokeStyle = 'black';
+   /*  this.context.strokeStyle = 'black';
     this.context.lineWidth = 2;
     this.context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
     this.context.stroke();
-    this.context.fill();
+    this.context.fill(); */
+    //this.context.drawImage(this.fill, this.posXoriginal -20, this.posYoriginal-20); 
 
     if (this.resaltado) {
       this.context.strokeStyle = this.resaltadoestilo;

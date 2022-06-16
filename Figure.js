@@ -38,7 +38,9 @@ class Figure {
   }
 
   draw() {
-    this.context.fillStyle = this.fill;
+    /* this.context.fillStyle = this.fill; */
+    this.context.drawImage(this.fill, this.x-20, this.y-20);
+    
   }
 
   setResaltado(resaltado) {

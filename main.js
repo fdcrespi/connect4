@@ -37,7 +37,6 @@ function drawTab(){
    ctx.beginPath();
    ctx.fillStyle = "#1E69B1";
    ctx.fillRect(220, 75, 350, 290);
-   /* FIN dibujo base tablero */
 }
 
 
@@ -129,8 +128,16 @@ function play (){
     }
   }
   for (let i = 0; i < CANT_FIGURAS; i++) {
-    addFigure('green', 1);
-    addFigure('blue', 2);  
+    let img1 = new Image(40,40);
+        img1.src = "img/img12.png";
+    let img2 = new Image(40,40);
+        img2.src = "img/img11.png";
+    img1.onload = () => {
+      addFigure(/* 'green' */ img1 , 1);
+    }
+    img2.onload = () => {
+      addFigure(/* 'blue' */  img2 , 2);  
+    }
   }
   deshabilitarFichas(2);
   addTablero();
@@ -165,7 +172,7 @@ setTimeout(() => {
 function addTablero() {
   casilleros = [];   
  
-  drawTab(); // dibujo base tablero PERO no se redibuja luego.
+  drawTab(); 
 
   for (let x = 0; x < columnas; x++) {
     ctx.beginPath();
@@ -173,6 +180,7 @@ function addTablero() {
     ctx.arc(posx, 50, 21, Math.PI * 1, 0, true);
     ctx.fillStyle = "#FFF7CE";
     ctx.strokeStyle = "black";
+    ctx.lineWidth = 2;
     ctx.fill();
     ctx.stroke();
     casilleros.push({ x: posx, y: 50 });
@@ -181,18 +189,17 @@ function addTablero() {
   for (let i = 0; i < filas; i++) {
     /* board[i] = []; */
     for (let j = 0; j < columnas; j++) {
-      ctx.strokeStyle = `rgb(
+      /* ctx.strokeStyle = `rgb(
         0,
         ${Math.floor(255 - 42.5 * i)},
-        ${Math.floor(255 - 42.5 * j)})`;
+        ${Math.floor(255 - 42.5 * j)})`; */
         ctx.fillStyle = "white";
-        //ctx.fillStyle = "white"; //agrego fondo blanco
         ctx.beginPath();
         let positionx = 250 + j * 48;
         let positiony = 100 + i * 48;
         ctx.arc(positionx, positiony, 21, 0, Math.PI * 2, true);
         ctx.fill(); //agrego fondo blanco
-        ctx.stroke();
+        /* ctx.stroke(); */
         /* Inicializamos la matriz de front */
         /* board[i][j] = ({ x: positionx, y: positiony }); */
         board[i][j].x = positionx;
@@ -207,7 +214,7 @@ canvas.addEventListener("mousemove", onMouseMove, false);
 
 
 /* Verificar ganador */
-
+/*
 function comprobarGanador(board, filaUltimaFicha, columnaUltimaFicha, filas, columnas) {
   if ((columnaUltimaFicha - (CANTIDADFICHAS-1) >= 0) && (verificarIzquierda(board,filaUltimaFicha,columnaUltimaFicha))) {
     return true; 
@@ -340,4 +347,98 @@ function verificarDerecha (board, fila, col, columnas) {
   if (cantFichasIguales == CANTIDADFICHAS) {
     return true;
   } else return false;	
+}
+*/
+/* Verificar ganador */
+
+function comprobarGanador(board, fila, col, filas, columnas) {
+  //Mirar en todas las direcciones a partir de donde cayo la ficha para comprobar si gano
+  if (verificarHorizontal(board, fila, col, columnas) || verificarAbajo(board, fila, col, filas) || verificarDiagonalIzquierda(board, fila, col, filas, columnas) || verificarDiagonalDerecha(board, fila, col, filas, columnas)){
+    return true;
+  }
+  return false;
+}
+
+function verificarHorizontal(board, fila, col, columnas) {
+  let cantFichasIguales = 0;
+  while ((col < columnas-1) && (board[fila][col].value == board[fila][col+1].value)){ // verifica cuantas fichas iguales tiene a la derecha
+    col++;
+    cantFichasIguales++;
+  }
+  col -= cantFichasIguales; //se para en la columna donde cayo la ficha en un principio. (evita recorrer de nuevo)
+  cantFichasIguales++; 
+  while ((col > 0) && (cantFichasIguales < CANTIDADFICHAS)) { // verifica cuantas fichas iguales tiene a la izquierda
+    if (board[fila][col].value != board[fila][col-1].value) {
+      return false;
+    } else {
+      ++cantFichasIguales;
+      col--;
+    }
+  }
+  if (cantFichasIguales == CANTIDADFICHAS) {
+    return true;
+  } else return false;
+}
+
+function verificarAbajo (board, fila, col, filas){
+  let cantFichasIguales = 1;
+  while ((fila < filas-1) && (cantFichasIguales < CANTIDADFICHAS)) {
+    if (board[fila][col].value != board[fila+1][col].value) {//mira todas las fichas en la fila de abajo de la ficha ingresada
+      return false;
+    } else {
+      cantFichasIguales++;
+      fila++;
+    }
+  }
+  if (cantFichasIguales == CANTIDADFICHAS) {
+    return true;
+  } else return false;
+}
+
+function verificarDiagonalDerecha(board, fila, col, filas, columnas){
+  let cantFichasIguales = 0;
+  while ((fila < filas-1) && (col < columnas-1) && (board[fila][col].value == board[fila+1][col+1].value)){//verifica abajo a la derecha si es igual y no se pase de la matriz
+    fila++;
+    col++;
+    cantFichasIguales++;
+  }
+  fila -= cantFichasIguales; //se para en la fila que cayo en ppio
+  col -= cantFichasIguales; //se para en la columna que vayo en ppio
+  cantFichasIguales++;
+  while ((fila > 0) && (col > 0) && (cantFichasIguales < CANTIDADFICHAS)){ //verifica arriba a la izquierda de la ficha
+    if (board[fila][col].value != board[fila-1][col-1].value) {
+      return false;
+    } else {
+      cantFichasIguales++;
+      fila--;
+      col--;
+    }
+  }
+  if (cantFichasIguales == CANTIDADFICHAS) {
+    return true;
+  } else return false;
+}
+
+function verificarDiagonalIzquierda(board, fila, col, filas, columnas){
+  let cantFichasIguales = 0;
+  while ((fila < filas-1) && (col > 0) && (board[fila][col].value==board[fila+1][col-1].value)){ //verifica abajo a la izquierda
+    fila++;
+    col--;
+    cantFichasIguales++;
+  }
+  fila -= cantFichasIguales;
+  col += cantFichasIguales;
+  cantFichasIguales++;
+  while ((fila > 0) && (col < columnas-1) && (cantFichasIguales < CANTIDADFICHAS)){ //verifica arriba a la derecha
+    if (board[fila][col].value != board[fila-1][col+1].value) {
+      return false;
+    } else {
+      cantFichasIguales++;
+      fila--;
+      col++;
+    }
+  }
+  if (cantFichasIguales == CANTIDADFICHAS) {
+    return true;
+  } else return false;
 }
