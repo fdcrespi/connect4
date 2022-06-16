@@ -82,34 +82,36 @@ function buscarFiguraClickeada(x, y) {
 }
 
 function onMouseUp(e) {
-  isMouseDown = false;
-  let isColocado = false;
-  casilleros.forEach(elem => {
-    if (elem.x > e.offsetX - 10 && elem.x < e.offsetX + 10 && elem.y > e.offsetY - 10 && elem.y < e.offsetY + 10) {
-      let columna = casilleros.indexOf(elem);
-      for (let index = filas - 1; index >= 0; index--) {
-        let casilla = board[index][columna]; 
-        if (casilla.value == 0) {
-          isColocado = true;
-          board[index][columna].value = ultimaFiguraClickeada.jugador;
-          ultimaFiguraClickeada.setPosition(board[index][columna].x, board[index][columna].y);
-          ultimaFiguraClickeada.setIsClickable(false);
-          ultimaFiguraClickeada.setResaltado(false);
-          ultimaFiguraClickeada.setIsPut(true);
-          deshabilitarFichas(ultimaFiguraClickeada.jugador);
-          if (comprobarGanador(board, index, columna, filas, columnas)) {
-            console.log('Ganador: ' + ultimaFiguraClickeada.jugador);
-            deshabilitarTodasLasFichas();
+  if (ultimaFiguraClickeada != null) {
+    isMouseDown = false;
+    let isColocado = false;
+    casilleros.forEach(elem => {
+      if (elem.x > e.offsetX - 10 && elem.x < e.offsetX + 10 && elem.y > e.offsetY - 10 && elem.y < e.offsetY + 10) {
+        let columna = casilleros.indexOf(elem);
+        for (let index = filas - 1; index >= 0; index--) {
+          let casilla = board[index][columna]; 
+          if (casilla.value == 0) {
+            isColocado = true;
+            board[index][columna].value = ultimaFiguraClickeada.jugador;
+            ultimaFiguraClickeada.setPosition(board[index][columna].x, board[index][columna].y);
+            ultimaFiguraClickeada.setIsClickable(false);
+            ultimaFiguraClickeada.setResaltado(false);
+            ultimaFiguraClickeada.setIsPut(true);
+            deshabilitarFichas(ultimaFiguraClickeada.jugador);
+            if (comprobarGanador(board, index, columna, filas, columnas)) {
+              console.log('Ganador: ' + ultimaFiguraClickeada.jugador);
+              deshabilitarTodasLasFichas();
+            }
+            drawFigure();
+            break;
           }
-          drawFigure();
-          break;
         }
       }
+    });
+    if (!isColocado){
+      ultimaFiguraClickeada.setPosition(ultimaFiguraClickeada.getPositionOriginal().x, ultimaFiguraClickeada.getPositionOriginal().y);
+      drawFigure();
     }
-  });
-  if (ultimaFiguraClickeada != null && !isColocado){
-    ultimaFiguraClickeada.setPosition(ultimaFiguraClickeada.getPositionOriginal().x, ultimaFiguraClickeada.getPositionOriginal().y);
-    drawFigure();
   }
 }
 
