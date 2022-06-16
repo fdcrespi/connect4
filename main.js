@@ -160,14 +160,7 @@ function deshabilitarTodasLasFichas(){
 }
 
 play();
-/*document.querySelector("#time").style.display = "none";
-document.querySelector("#reset").addEventListener("click", () => {
-  location.reload();
-})
-setTimeout(() => {
-  document.querySelector("#time").style.display = "block";
-}, 6000);*/
-/* console.log(board); */
+
 
 function addTablero() {
   casilleros = [];   
@@ -178,10 +171,10 @@ function addTablero() {
     ctx.beginPath();
     let posx = 250 + x * 48;
     ctx.arc(posx, 50, 21, Math.PI * 1, 0, true);
-    ctx.fillStyle = "#FFF7CE";
+    /* ctx.fillStyle = "#FFF7CE"; */
     ctx.strokeStyle = "black";
     ctx.lineWidth = 2;
-    ctx.fill();
+    /* ctx.fill(); */
     ctx.stroke();
     casilleros.push({ x: posx, y: 50 });
   }
@@ -212,143 +205,6 @@ canvas.addEventListener("mousedown", onMouseDown, false);
 canvas.addEventListener("mouseup", onMouseUp, false);
 canvas.addEventListener("mousemove", onMouseMove, false);
 
-
-/* Verificar ganador */
-/*
-function comprobarGanador(board, filaUltimaFicha, columnaUltimaFicha, filas, columnas) {
-  if ((columnaUltimaFicha - (CANTIDADFICHAS-1) >= 0) && (verificarIzquierda(board,filaUltimaFicha,columnaUltimaFicha))) {
-    return true; 
-  }
-  if ((columnaUltimaFicha + (CANTIDADFICHAS-1) < columnas) && (verificarDerecha(board, filaUltimaFicha, columnaUltimaFicha, columnas))) {
-    return true;
-  }
-  if ((filaUltimaFicha + (CANTIDADFICHAS-1) < filas) && (verificarAbajo(board, filaUltimaFicha, columnaUltimaFicha, filas))) {
-    return true;
-  }
-  if ((filaUltimaFicha + (CANTIDADFICHAS-1) < filas) && (columnaUltimaFicha + (CANTIDADFICHAS-1) < columnas) && (verificarDerechaAbajo(board, filaUltimaFicha, columnaUltimaFicha, filas, columnas))) {
-    return true;
-  }
-  if ((filaUltimaFicha + (CANTIDADFICHAS-1) < filas) && (columnaUltimaFicha - (CANTIDADFICHAS-1) >= 0) && (verificarIzquierdaAbajo(board, filaUltimaFicha, columnaUltimaFicha, columnas))){
-    return true;
-  }
-  if ((filaUltimaFicha - (CANTIDADFICHAS-1) >= 0) && (columnaUltimaFicha + (CANTIDADFICHAS-1) < columnas) && (verificarDerechaArriba(board, filaUltimaFicha, columnaUltimaFicha, columnas))) {
-    return true;
-  }
-  if ((filaUltimaFicha + (CANTIDADFICHAS-1) >= 0) && (columnaUltimaFicha - (CANTIDADFICHAS-1) >= 0) && (verificarIzquierdaArriba(board, filaUltimaFicha, columnaUltimaFicha))){
-    return true;
-  }
-  return false;
-}
-
-function verificarIzquierdaArriba(board, fila, col){
-  let cantFichasIguales = 1;
-  while ((fila > 0) && (col > 0) && (cantFichasIguales < CANTIDADFICHAS)){
-    if (board[fila][col].value != board[fila-1][col-1].value) {
-      return false;
-    } else {
-      cantFichasIguales++;
-      fila--;
-      col--;
-    }
-  }
-  if (cantFichasIguales == CANTIDADFICHAS) {
-    return true;
-  } else return false;
-}
-
-function verificarDerechaArriba(board, fila, col, columnas){
-  let cantFichasIguales = 1;
-  while ((fila > 0) && (col < columnas) && (cantFichasIguales < CANTIDADFICHAS)){
-    if (board[fila][col].value != board[fila-1][col+1].value) {
-      return false;
-    } else {
-      cantFichasIguales++;
-      fila--;
-      col++;
-    }
-  }
-  if (cantFichasIguales == CANTIDADFICHAS) {
-    return true;
-  } else return false;
-}
-
-function verificarIzquierdaAbajo(board, fila, col, filas){
-  let cantFichasIguales = 1;
-  while ((fila < filas) && (col > 0) && (cantFichasIguales < CANTIDADFICHAS)){
-    if (board[fila][col].value != board[fila+1][col-1].value) {
-      return false;
-    } else {
-      cantFichasIguales++;
-      fila++;
-      col--;
-    }
-  }
-  if (cantFichasIguales == CANTIDADFICHAS) {
-    return true;
-  } else return false;
-}
-
-function verificarDerechaAbajo(board, fila, col, filas, columnas){
-  let cantFichasIguales = 1;
-  while ((fila < filas) && (col < columnas) && (cantFichasIguales < CANTIDADFICHAS)){
-    if (board[fila][col].value != board[fila+1][col+1].value) {
-      return false;
-    } else {
-      cantFichasIguales++;
-      fila++;
-      col++;
-    }
-  }
-  if (cantFichasIguales == CANTIDADFICHAS) {
-    return true;
-  } else return false;
-}
-
-function verificarAbajo (board, fila, col, filas){
-  let cantFichasIguales = 1;
-  while ((fila < filas) && (cantFichasIguales < CANTIDADFICHAS)) {
-    if (board[fila][col].value != board[fila+1][col].value) {
-      return false;
-    } else {
-      cantFichasIguales++;
-      fila++;
-    }
-  }
-  if (cantFichasIguales == CANTIDADFICHAS) {
-    return true;
-  } else return false;
-}
-
-function verificarIzquierda(board, fila, col) {
-  let cantFichasIguales = 1;
-  while ((col > 0) && (cantFichasIguales < CANTIDADFICHAS)) {
-    if (board[fila][col].value != board[fila][col-1].value) {
-      return false;
-    } else {
-      ++cantFichasIguales;
-      col--;
-    }
-  }
-  if (cantFichasIguales == CANTIDADFICHAS) {
-    return true;
-  } else return false;
-}
-
-function verificarDerecha (board, fila, col, columnas) {
-  let cantFichasIguales = 1;
-  while ((col < columnas) && (cantFichasIguales < CANTIDADFICHAS)) {
-    if (board[fila][col].value != board[fila][col+1].value) {
-      return false;
-    } else {
-      cantFichasIguales++;
-      col++;
-    }
-  }
-  if (cantFichasIguales == CANTIDADFICHAS) {
-    return true;
-  } else return false;	
-}
-*/
 /* Verificar ganador */
 
 function comprobarGanador(board, fila, col, filas, columnas) {
